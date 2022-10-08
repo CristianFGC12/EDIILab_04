@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,11 +46,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Compania.cs" />
+    <Compile Include="Models\Ingreso.cs" />
+    <Compile Include="Models\Solicitante.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ARBOL_AVL\ARBOL_AVL.csproj">
+      <Project>{5bb5559b-301f-43ed-b525-19fdb75c4880}</Project>
+      <Name>ARBOL_AVL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CRYPTH\CRYPTH.csproj">
+      <Project>{6702e0f5-6009-4a0c-9c05-09539b807e72}</Project>
+      <Name>CRYPTH</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Huffman\Huffman.csproj">
+      <Project>{45ff209d-b7e7-46b0-a4f0-a263cce8a92e}</Project>
+      <Name>Huffman</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LZW\LZW.csproj">
+      <Project>{86ff5bf1-8d3a-4659-a0a4-61503d5b564a}</Project>
+      <Name>LZW</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
