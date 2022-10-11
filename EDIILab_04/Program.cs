@@ -13,13 +13,15 @@ using CRYPTH;
 using Formatting = Newtonsoft.Json.Formatting;
 using static System.Net.WebRequestMethods;
 using File = System.IO.File;
+using System.Security.Cryptography;
 
 namespace EDIILab_04
 {
     internal class Program
     {
         public static AVLTree<Ingreso> solicitante = new AVLTree<Ingreso>();
-        public static string LLAVE = "metaknight";
+        public static byte[] VI = Encoding.Default.GetBytes("metaknight199345");
+        public static byte[] LLAVE = Encoding.Default.GetBytes("ABC123ARTUIOPLKJHGFDSAZXCVBNMKXT");
         static void Main(string[] args)
         {
             string ruta = "";
@@ -140,24 +142,30 @@ namespace EDIILab_04
                 if (match.Success)
                 {
                     string text = System.IO.File.ReadAllText(file);
-                    string encypher = CRYPTH.CRYPTH.Encipher(text,LLAVE,'|');
+                    byte[] encypher = CRYPTH.CRYPTH.Encrypt(text, LLAVE, VI);
                     string rutecompress = rutelettercomp + "\\" + "crypted-CONV-" + dpi + "-" + Convert.ToString(numcart) + ".txt";
-                    File.WriteAllText(rutecompress, encypher);
+                    string encryph = JsonConvert.SerializeObject(encypher);
+                    File.WriteAllText(rutecompress, encryph);
                     numcart++;
                 }
             }
+            string key = Encoding.ASCII.GetString(LLAVE);
+            Console.WriteLine("La llave de cifrado es: " + key);
             string[] compressfiles = Directory.GetFiles(rutelettercomp);
             Console.WriteLine("Escriba el directorio donde guardar las cartas descomprimidas");
             string ruteletterdecode = Console.ReadLine();
             Regex regex2 = new Regex(@"crypted-CONV-" + dpi);
             int letternum = 1;
+            Console.WriteLine("Ingrese llave: ");
+            byte[] deskey = Encoding.ASCII.GetBytes(Console.ReadLine());
             foreach (string cfile in compressfiles)
             {
                 Match m = regex2.Match(cfile);
                 if (m.Success)
                 {
                     string text = System.IO.File.ReadAllText(cfile);
-                    string decypher = CRYPTH.CRYPTH.Decipher(text,LLAVE);
+                    byte[] decrypther = JsonConvert.DeserializeObject<byte[]>(text);
+                    string decypher = CRYPTH.CRYPTH.Decrypt(decrypther,deskey,VI);
                     string rutedecompress = ruteletterdecode + "\\" + "decompressed-REC-" + dpi + "-" + Convert.ToString(letternum) + ".txt";
                     File.WriteAllText(rutedecompress, decypher);
                     letternum++;
